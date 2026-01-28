@@ -38,8 +38,9 @@ export function WorkPlace({ tasks, loading, onAdd, onUpdateStatus, onDelete, act
         onAdd={onAdd}
         category="work"
         showTimeFields
-        titlePlaceholder="Shift or project..."
         subcategoryOptions={subcategoryOptions}
+        headerText="Enlist for Toil"
+        hideTitle
       />
       <TaskList
         tasks={filtered}

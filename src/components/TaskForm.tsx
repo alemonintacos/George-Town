@@ -10,9 +10,11 @@ interface Props {
   showTimeFields?: boolean
   titlePlaceholder?: string
   subcategoryOptions?: { value: string; label: string }[]
+  headerText?: string
+  hideTitle?: boolean
 }
 
-export function TaskForm({ onAdd, category, showTimeFields, titlePlaceholder, subcategoryOptions }: Props) {
+export function TaskForm({ onAdd, category, showTimeFields, titlePlaceholder, subcategoryOptions, headerText, hideTitle }: Props) {
   const [title, setTitle] = useState('')
   const [subcategory, setSubcategory] = useState('')
   const [scheduledDate, setScheduledDate] = useState('')
@@ -27,10 +29,11 @@ export function TaskForm({ onAdd, category, showTimeFields, titlePlaceholder, su
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!title.trim()) return
+    const effectiveTitle = hideTitle ? subcategory : title.trim()
+    if (!effectiveTitle) return
     await onAdd({
-      title: title.trim(),
-      description: subcategory || '',
+      title: effectiveTitle,
+      description: hideTitle ? '' : (subcategory || ''),
       category,
       subcategory: subcategory || undefined,
       scheduledDate: scheduledDate || undefined,
@@ -52,17 +55,19 @@ export function TaskForm({ onAdd, category, showTimeFields, titlePlaceholder, su
       <div className="flex items-center gap-2 mb-3">
         <span className="text-lg">✒️</span>
         <span className="font-cinzel text-xs font-bold text-leather uppercase tracking-wider">
-          Post a New Quest
+          {headerText ?? 'Post a New Quest'}
         </span>
       </div>
       <div className="flex gap-2 flex-wrap items-center">
-        <input
-          type="text"
-          placeholder={titlePlaceholder ?? 'Quest title...'}
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          className="flex-1 min-w-[140px] px-3 py-2 bg-parchment/60 border border-leather/30 rounded-lg text-sm font-lora text-tavern placeholder:text-leather/40 focus:outline-none focus:ring-2 focus:ring-gold"
-        />
+        {!hideTitle && (
+          <input
+            type="text"
+            placeholder={titlePlaceholder ?? 'Quest title...'}
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            className="flex-1 min-w-[140px] px-3 py-2 bg-parchment/60 border border-leather/30 rounded-lg text-sm font-lora text-tavern placeholder:text-leather/40 focus:outline-none focus:ring-2 focus:ring-gold"
+          />
+        )}
         {subcategoryOptions ? (
           <select
             value={subcategory}
