@@ -30,8 +30,11 @@ export function useTasks() {
   useEffect(() => { fetchTasks() }, [fetchTasks])
 
   const addTask = async (opts: AddTaskOptions) => {
-    if (!supabase) return
-    const { data } = await supabase
+    if (!supabase) {
+      console.error('Supabase not configured')
+      return
+    }
+    const { data, error } = await supabase
       .from('tasks')
       .insert({
         title: opts.title,
@@ -47,6 +50,11 @@ export function useTasks() {
       })
       .select()
       .single()
+    if (error) {
+      console.error('Failed to add task:', error)
+      alert(`Failed to add task: ${error.message}`)
+      return
+    }
     if (data) setTasks(prev => [data as Task, ...prev])
   }
 

@@ -29,7 +29,12 @@ export function TaskForm({ onAdd, category, showTimeFields, titlePlaceholder, su
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const effectiveTitle = hideTitle ? subcategory : title.trim()
+    // When hideTitle is true, use the dropdown label as the title
+    let effectiveTitle = title.trim()
+    if (hideTitle && subcategoryOptions) {
+      const selected = subcategoryOptions.find(o => o.value === subcategory)
+      effectiveTitle = selected?.label ?? subcategory
+    }
     if (!effectiveTitle) return
     await onAdd({
       title: effectiveTitle,
