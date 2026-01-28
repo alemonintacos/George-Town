@@ -22,6 +22,7 @@ export function TaskForm({ onAdd, category, showTimeFields, titlePlaceholder, su
   const [scheduledEnd, setScheduledEnd] = useState('')
   const [repeatDays, setRepeatDays] = useState<number[]>([])
   const [showRepeat, setShowRepeat] = useState(false)
+  const [showRequired, setShowRequired] = useState(false)
 
   const toggleDay = (day: number) => {
     setRepeatDays(prev => prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day].sort())
@@ -45,6 +46,7 @@ export function TaskForm({ onAdd, category, showTimeFields, titlePlaceholder, su
       scheduledStart: scheduledStart || undefined,
       scheduledEnd: scheduledEnd || undefined,
       repeatDays: repeatDays.length ? repeatDays : undefined,
+      showRequired: showRequired || undefined,
     })
     setTitle('')
     setSubcategory('')
@@ -53,6 +55,7 @@ export function TaskForm({ onAdd, category, showTimeFields, titlePlaceholder, su
     setScheduledEnd('')
     setRepeatDays([])
     setShowRepeat(false)
+    setShowRequired(false)
   }
 
   return (
@@ -127,6 +130,20 @@ export function TaskForm({ onAdd, category, showTimeFields, titlePlaceholder, su
         >
           🔁
         </button>
+        {category !== 'goal' && (
+          <button
+            type="button"
+            onClick={() => setShowRequired(prev => !prev)}
+            className={`px-2 py-2 rounded-lg text-sm font-bold border transition-colors ${
+              showRequired
+                ? 'bg-crimson/30 border-crimson/50 text-crimson-light'
+                : 'bg-parchment/40 border-leather/20 text-leather/50 hover:bg-parchment/60'
+            }`}
+            title="Show in Required Tasks"
+          >
+            ❗
+          </button>
+        )}
         <button
           type="submit"
           className="px-4 py-2 bg-gradient-to-r from-forest-dark to-forest text-white font-cinzel text-sm font-bold rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all"

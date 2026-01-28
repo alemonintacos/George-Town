@@ -51,6 +51,7 @@ export function WorkPlace({ tasks, loading, onAdd, onUpdateStatus, onDelete, act
         elapsed={elapsed}
         onStartTimer={onStartTimer}
         onStopTimer={onStopTimer}
+        showFilters={false}
       />
     </BuildingShell>
   )

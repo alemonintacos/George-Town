@@ -11,6 +11,7 @@ export interface AddTaskOptions {
   scheduledStart?: string
   scheduledEnd?: string
   repeatDays?: number[]
+  showRequired?: boolean
 }
 
 export function useTasks() {
@@ -46,6 +47,7 @@ export function useTasks() {
         scheduled_start: opts.scheduledStart || null,
         scheduled_end: opts.scheduledEnd || null,
         repeat_days: opts.repeatDays?.length ? opts.repeatDays : null,
+        show_required: opts.showRequired ?? false,
         completed_at: null,
       })
       .select()

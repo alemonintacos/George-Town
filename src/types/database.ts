@@ -12,6 +12,7 @@ export interface Task {
   scheduled_start: string | null
   scheduled_end: string | null
   repeat_days: number[] | null
+  show_required: boolean | null
   created_at: string
   completed_at: string | null
 }

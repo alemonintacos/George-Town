@@ -102,7 +102,6 @@ function App() {
     document.body.style.background = wb.background
   }, [wb.background])
 
-  const countFor = (category: string) => tasks.filter(t => t.category === category && t.status !== 'done').length
   const goBack = () => setActiveBuilding(null)
 
   const sharedProps = {
@@ -166,7 +165,6 @@ function App() {
                   icon="🏛️"
                   name="University School"
                   subtitle="Study & classes"
-                  taskCount={countFor('university')}
                   gradient="from-purple-950 to-indigo-950"
                   border="border-purple-500/60"
                   onClick={() => setActiveBuilding('university')}
@@ -175,7 +173,6 @@ function App() {
                   icon="⚒️"
                   name="Work Place"
                   subtitle="Shifts & projects"
-                  taskCount={countFor('work')}
                   gradient="from-stone-900 to-zinc-900"
                   border="border-stone/60"
                   onClick={() => setActiveBuilding('work')}
@@ -184,7 +181,6 @@ function App() {
                   icon="🍺"
                   name="Tavern Pub"
                   subtitle="Social events"
-                  taskCount={countFor('social')}
                   gradient="from-amber-950 to-orange-950"
                   border="border-amber-500/60"
                   onClick={() => setActiveBuilding('social')}
@@ -193,7 +189,6 @@ function App() {
                   icon="📋"
                   name="Notice Board"
                   subtitle="Goals & schedule"
-                  taskCount={countFor('goal')}
                   gradient="from-stone-dark to-stone-900"
                   border="border-parchment/40"
                   onClick={() => setActiveBuilding('notice')}

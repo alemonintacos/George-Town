@@ -41,12 +41,15 @@ interface Props {
   elapsed: number
   onStartTimer: (id: string) => Promise<void>
   onStopTimer: () => Promise<void>
+  showTimer?: boolean
 }
 
-export function TaskItem({ task, onUpdateStatus, onDelete, activeTaskId, elapsed, onStartTimer, onStopTimer }: Props) {
+export function TaskItem({ task, onUpdateStatus, onDelete, activeTaskId, elapsed, onStartTimer, onStopTimer, showTimer = true }: Props) {
   const isTimerActive = activeTaskId === task.id
   const next = nextStatus[task.status]
   const status = statusConfig[task.status]
+  // Only show timer for university study tasks
+  const canShowTimer = showTimer && task.category === 'university' && task.subcategory === 'study'
 
   return (
     <div className={`flex items-center gap-3 p-3 rounded-lg border border-l-4 ${categoryBorder[task.category]} transition-all ${
@@ -94,11 +97,11 @@ export function TaskItem({ task, onUpdateStatus, onDelete, activeTaskId, elapsed
         {status.label}
       </span>
 
-      {isTimerActive && (
+      {canShowTimer && isTimerActive && (
         <span className="text-sm font-cinzel font-bold text-gold animate-pulse">{formatTime(elapsed)}</span>
       )}
 
-      {task.status !== 'done' && (
+      {canShowTimer && task.status !== 'done' && (
         isTimerActive ? (
           <button onClick={onStopTimer} className="px-2 py-1 text-xs font-cinzel font-bold bg-crimson/80 text-white rounded-lg hover:bg-crimson transition-colors">
             🛑 Halt

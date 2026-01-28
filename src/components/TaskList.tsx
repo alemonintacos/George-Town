@@ -18,9 +18,11 @@ interface Props {
   elapsed: number
   onStartTimer: (id: string) => Promise<void>
   onStopTimer: () => Promise<void>
+  showFilters?: boolean
+  showTimer?: boolean
 }
 
-export function TaskList({ tasks, loading, onUpdateStatus, onDelete, activeTaskId, elapsed, onStartTimer, onStopTimer }: Props) {
+export function TaskList({ tasks, loading, onUpdateStatus, onDelete, activeTaskId, elapsed, onStartTimer, onStopTimer, showFilters = true, showTimer = true }: Props) {
   const [filter, setFilter] = useState<TaskStatus | 'all'>('all')
 
   const filtered = filter === 'all' ? tasks : tasks.filter(t => t.status === filter)
@@ -36,21 +38,23 @@ export function TaskList({ tasks, loading, onUpdateStatus, onDelete, activeTaskI
 
   return (
     <div>
-      <div className="flex gap-1.5 mb-4 flex-wrap">
-        {filters.map(f => (
-          <button
-            key={f.value}
-            onClick={() => setFilter(f.value)}
-            className={`px-3 py-1.5 text-xs font-cinzel font-bold rounded-full transition-all ${
-              filter === f.value
-                ? 'bg-gradient-to-r from-gold to-gold-light text-tavern shadow-md'
-                : 'bg-parchment/15 text-parchment/60 hover:bg-parchment/25 hover:text-parchment/80'
-            }`}
-          >
-            {f.icon} {f.label}
-          </button>
-        ))}
-      </div>
+      {showFilters && (
+        <div className="flex gap-1.5 mb-4 flex-wrap">
+          {filters.map(f => (
+            <button
+              key={f.value}
+              onClick={() => setFilter(f.value)}
+              className={`px-3 py-1.5 text-xs font-cinzel font-bold rounded-full transition-all ${
+                filter === f.value
+                  ? 'bg-gradient-to-r from-gold to-gold-light text-tavern shadow-md'
+                  : 'bg-parchment/15 text-parchment/60 hover:bg-parchment/25 hover:text-parchment/80'
+              }`}
+            >
+              {f.icon} {f.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="space-y-2">
         {filtered.length === 0 ? (
@@ -71,6 +75,7 @@ export function TaskList({ tasks, loading, onUpdateStatus, onDelete, activeTaskI
               elapsed={elapsed}
               onStartTimer={onStartTimer}
               onStopTimer={onStopTimer}
+              showTimer={showTimer}
             />
           ))
         )}

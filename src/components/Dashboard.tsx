@@ -162,6 +162,10 @@ export function Dashboard({ tasks }: Props) {
     return aDate.localeCompare(bDate)
   })
 
+  // Split required tasks: notice board (goal) vs others with show_required
+  const requiredGoals = required.filter(t => t.category === 'goal')
+  const requiredOthers = required.filter(t => t.category !== 'goal' && t.show_required)
+
   // Countdowns
   const [countdowns, setCountdowns] = useState<Countdown[]>(loadCountdowns)
   const [cdTitle, setCdTitle] = useState('')
@@ -319,6 +323,19 @@ export function Dashboard({ tasks }: Props) {
                     if (cell.day === null) return <div key={`empty-${i}`} />
                     const cellTasks = monthTaskMap.get(cell.str) ?? []
                     const isSelected = cell.str === viewingDate
+
+                    // Determine which task type indicators to show
+                    const hasWork = cellTasks.some(t => t.category === 'work')
+                    const hasTest = cellTasks.some(t => t.category === 'university' && t.subcategory === 'test')
+                    const hasClass = cellTasks.some(t => t.category === 'university' && t.subcategory === 'class')
+                    const hasSocial = cellTasks.some(t => t.category === 'social')
+
+                    const indicators: string[] = []
+                    if (hasWork) indicators.push('border-stone-400')
+                    if (hasTest) indicators.push('border-yellow-400')
+                    if (hasClass) indicators.push('border-green-400')
+                    if (hasSocial) indicators.push('border-pink-400')
+
                     return (
                       <button
                         key={cell.str}
@@ -332,7 +349,19 @@ export function Dashboard({ tasks }: Props) {
                               : 'hover:bg-parchment/10'
                         }`}
                       >
-                        <span className={`text-[10px] font-cinzel ${
+                        {/* Stacked colored borders for task types */}
+                        {indicators.length > 0 && (
+                          <div className="absolute inset-0 flex flex-col rounded overflow-hidden pointer-events-none">
+                            {indicators.map((borderClass, idx) => (
+                              <div
+                                key={idx}
+                                className={`flex-1 border-2 ${borderClass} rounded`}
+                                style={{ opacity: 0.6 }}
+                              />
+                            ))}
+                          </div>
+                        )}
+                        <span className={`relative z-10 text-[10px] font-cinzel ${
                           isSelected ? 'text-purple-200 font-bold'
                             : cell.isToday ? 'text-gold-light font-bold'
                             : 'text-parchment/50'
@@ -340,7 +369,7 @@ export function Dashboard({ tasks }: Props) {
                           {cell.day}
                         </span>
                         {cellTasks.length > 0 && (
-                          <div className="flex justify-center gap-0.5 mt-0.5 flex-wrap">
+                          <div className="relative z-10 flex justify-center gap-0.5 mt-0.5 flex-wrap">
                             {cellTasks.slice(0, 3).map(t => (
                               <span key={t.id} className={`w-1.5 h-1.5 rounded-full ${categoryConfig[t.category].dot}`} />
                             ))}
@@ -364,11 +393,41 @@ export function Dashboard({ tasks }: Props) {
             <h3 className="font-cinzel text-sm font-bold text-gold-light uppercase tracking-wider mb-3">
               ⚔️ Required Tasks
             </h3>
-            {required.length === 0 ? (
-              <p className="font-lora italic text-parchment/40 text-xs">All quests conquered. Rest well, adventurer.</p>
-            ) : (
+
+            {/* Notice Board (Goal) tasks - prominent */}
+            {requiredGoals.length > 0 && (
+              <div className="space-y-2 mb-4">
+                {requiredGoals.map(t => {
+                  const overdue = t.scheduled_date && t.scheduled_date < realToday
+                  return (
+                    <div key={t.id} className="flex items-center gap-2 p-2 bg-gold/10 border border-gold/30 rounded-lg">
+                      <span className="text-lg">📋</span>
+                      <span className={`text-sm font-lora font-semibold truncate flex-1 ${
+                        t.status === 'in_progress' ? 'text-gold-light' : 'text-parchment'
+                      }`}>
+                        {t.title}
+                      </span>
+                      {overdue && (
+                        <span className="text-[9px] font-cinzel font-bold text-crimson-light uppercase">overdue</span>
+                      )}
+                      {t.scheduled_date && !overdue && (
+                        <span className="text-[10px] font-cinzel text-parchment/50">{t.scheduled_date.slice(5)}</span>
+                      )}
+                      <span className={`px-1.5 py-0.5 rounded text-[9px] font-cinzel font-bold uppercase ${
+                        t.status === 'in_progress' ? 'bg-amber-900/60 text-amber-200' : 'bg-purple-900/60 text-purple-200'
+                      }`}>
+                        {t.status === 'in_progress' ? 'active' : 'todo'}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+
+            {/* Other tasks marked as show_required */}
+            {requiredOthers.length > 0 && (
               <div className="space-y-1.5">
-                {required.map(t => {
+                {requiredOthers.map(t => {
                   const overdue = t.scheduled_date && t.scheduled_date < realToday
                   return (
                     <div key={t.id} className="flex items-center gap-2">
@@ -396,6 +455,10 @@ export function Dashboard({ tasks }: Props) {
                   )
                 })}
               </div>
+            )}
+
+            {requiredGoals.length === 0 && requiredOthers.length === 0 && (
+              <p className="font-lora italic text-parchment/40 text-xs">All quests conquered. Rest well, adventurer.</p>
             )}
           </div>
 
