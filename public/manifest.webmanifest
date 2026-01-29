@@ -1,11 +1,11 @@
 {
   "name": "George Town",
   "short_name": "George Town",
-  "description": "A Realm of Productivity & Glory",
+  "description": "Your Cozy Village Planner",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1a1a2e",
-  "theme_color": "#1a1a2e",
+  "background_color": "#87CEEB",
+  "theme_color": "#87CEEB",
   "orientation": "portrait",
   "icons": [
     {

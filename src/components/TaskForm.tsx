@@ -59,28 +59,28 @@ export function TaskForm({ onAdd, category, showTimeFields, titlePlaceholder, su
   }
 
   return (
-    <form onSubmit={handleSubmit} className="quest-scroll rounded-xl p-4 mb-5">
+    <form onSubmit={handleSubmit} className="form-board rounded-xl p-4 mb-5">
       <div className="flex items-center gap-2 mb-3">
-        <span className="text-lg">✒️</span>
-        <span className="font-cinzel text-xs font-bold text-leather uppercase tracking-wider">
-          {headerText ?? 'Post a New Quest'}
+        <span className="text-lg">📝</span>
+        <span className="font-heading text-xs font-bold text-wood-dark uppercase tracking-wider">
+          {headerText ?? 'Add New Task'}
         </span>
       </div>
       <div className="flex gap-2 flex-wrap items-center">
         {!hideTitle && (
           <input
             type="text"
-            placeholder={titlePlaceholder ?? 'Quest title...'}
+            placeholder={titlePlaceholder ?? 'Task title...'}
             value={title}
             onChange={e => setTitle(e.target.value)}
-            className="flex-1 min-w-[140px] px-3 py-2 bg-parchment/60 border border-leather/30 rounded-lg text-sm font-lora text-tavern placeholder:text-leather/40 focus:outline-none focus:ring-2 focus:ring-gold"
+            className="flex-1 min-w-[140px] px-3 py-2 bg-white border border-earth/30 rounded-lg text-sm font-body text-text-dark placeholder:text-text-light focus:outline-none focus:ring-2 focus:ring-focus"
           />
         )}
         {subcategoryOptions ? (
           <select
             value={subcategory}
             onChange={e => setSubcategory(e.target.value)}
-            className="px-3 py-2 bg-parchment/60 border border-leather/30 rounded-lg text-sm font-lora text-tavern focus:outline-none focus:ring-2 focus:ring-gold"
+            className="px-3 py-2 bg-white border border-earth/30 rounded-lg text-sm font-body text-text-dark focus:outline-none focus:ring-2 focus:ring-focus"
           >
             <option value="">Type...</option>
             {subcategoryOptions.map(o => (
@@ -93,14 +93,14 @@ export function TaskForm({ onAdd, category, showTimeFields, titlePlaceholder, su
             placeholder="Details (optional)"
             value={subcategory}
             onChange={e => setSubcategory(e.target.value)}
-            className="flex-1 min-w-[140px] px-3 py-2 bg-parchment/60 border border-leather/30 rounded-lg text-sm font-lora text-tavern placeholder:text-leather/40 focus:outline-none focus:ring-2 focus:ring-gold"
+            className="flex-1 min-w-[140px] px-3 py-2 bg-white border border-earth/30 rounded-lg text-sm font-body text-text-dark placeholder:text-text-light focus:outline-none focus:ring-2 focus:ring-focus"
           />
         )}
         <input
           type="date"
           value={scheduledDate}
           onChange={e => setScheduledDate(e.target.value)}
-          className="px-3 py-2 bg-parchment/60 border border-leather/30 rounded-lg text-sm font-lora text-tavern focus:outline-none focus:ring-2 focus:ring-gold"
+          className="px-3 py-2 bg-white border border-earth/30 rounded-lg text-sm font-body text-text-dark focus:outline-none focus:ring-2 focus:ring-focus"
         />
         {showTimeFields && (
           <>
@@ -108,23 +108,23 @@ export function TaskForm({ onAdd, category, showTimeFields, titlePlaceholder, su
               type="time"
               value={scheduledStart}
               onChange={e => setScheduledStart(e.target.value)}
-              className="px-2 py-2 bg-parchment/60 border border-leather/30 rounded-lg text-sm font-lora text-tavern focus:outline-none focus:ring-2 focus:ring-gold"
+              className="px-2 py-2 bg-white border border-earth/30 rounded-lg text-sm font-body text-text-dark focus:outline-none focus:ring-2 focus:ring-focus"
             />
             <input
               type="time"
               value={scheduledEnd}
               onChange={e => setScheduledEnd(e.target.value)}
-              className="px-2 py-2 bg-parchment/60 border border-leather/30 rounded-lg text-sm font-lora text-tavern focus:outline-none focus:ring-2 focus:ring-gold"
+              className="px-2 py-2 bg-white border border-earth/30 rounded-lg text-sm font-body text-text-dark focus:outline-none focus:ring-2 focus:ring-focus"
             />
           </>
         )}
         <button
           type="button"
           onClick={() => setShowRepeat(prev => !prev)}
-          className={`px-2 py-2 rounded-lg text-xs font-cinzel font-bold border transition-colors ${
+          className={`px-2 py-2 rounded-lg text-xs font-heading font-bold border transition-colors ${
             showRepeat || repeatDays.length
-              ? 'bg-gold/20 border-gold/50 text-leather'
-              : 'bg-parchment/40 border-leather/20 text-leather/50 hover:bg-parchment/60'
+              ? 'bg-sunshine/20 border-sunshine/50 text-wood-dark'
+              : 'bg-cream-dark border-earth/20 text-text-light hover:bg-wood/10'
           }`}
           title="Set repeating schedule"
         >
@@ -136,8 +136,8 @@ export function TaskForm({ onAdd, category, showTimeFields, titlePlaceholder, su
             onClick={() => setShowRequired(prev => !prev)}
             className={`px-2 py-2 rounded-lg text-sm font-bold border transition-colors ${
               showRequired
-                ? 'bg-crimson/30 border-crimson/50 text-crimson-light'
-                : 'bg-parchment/40 border-leather/20 text-leather/50 hover:bg-parchment/60'
+                ? 'bg-berry/20 border-berry/50 text-berry'
+                : 'bg-cream-dark border-earth/20 text-text-light hover:bg-wood/10'
             }`}
             title="Show in Required Tasks"
           >
@@ -146,23 +146,23 @@ export function TaskForm({ onAdd, category, showTimeFields, titlePlaceholder, su
         )}
         <button
           type="submit"
-          className="px-4 py-2 bg-gradient-to-r from-forest-dark to-forest text-white font-cinzel text-sm font-bold rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all"
+          className="px-4 py-2 bg-grass text-white font-heading text-sm font-bold rounded-lg shadow-md hover:shadow-lg hover:bg-grass-dark hover:scale-105 transition-all"
         >
-          📌 Post
+          ✅ Add
         </button>
       </div>
       {showRepeat && (
         <div className="flex items-center gap-2 mt-3">
-          <span className="text-xs font-cinzel font-bold text-leather/70">Repeat:</span>
+          <span className="text-xs font-heading font-bold text-text-mid">Repeat:</span>
           {DAY_LABELS.map((label, i) => (
             <button
               key={i}
               type="button"
               onClick={() => toggleDay(i)}
-              className={`w-7 h-7 rounded-full text-[10px] font-cinzel font-bold transition-colors ${
+              className={`w-7 h-7 rounded-full text-[10px] font-heading font-bold transition-colors ${
                 repeatDays.includes(i)
-                  ? 'bg-gold text-tavern'
-                  : 'bg-parchment/40 text-leather/50 hover:bg-parchment/60'
+                  ? 'bg-sunshine text-wood-dark'
+                  : 'bg-cream-dark text-text-light hover:bg-wood/10'
               }`}
             >
               {label}

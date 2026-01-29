@@ -1,16 +1,16 @@
 import type { Task, TaskStatus, TaskCategory } from '../types/database'
 
 const statusConfig: Record<TaskStatus, { label: string; icon: string; bg: string; text: string }> = {
-  todo: { label: 'Awaiting', icon: '📋', bg: 'bg-purple-900/60', text: 'text-purple-200' },
-  in_progress: { label: 'In Battle', icon: '⚔️', bg: 'bg-amber-900/60', text: 'text-amber-200' },
-  done: { label: 'Conquered', icon: '🏆', bg: 'bg-emerald-900/60', text: 'text-emerald-200' },
+  todo: { label: 'Todo', icon: '📋', bg: 'bg-todo/15', text: 'text-todo' },
+  in_progress: { label: 'Active', icon: '🔥', bg: 'bg-active/15', text: 'text-active' },
+  done: { label: 'Done', icon: '⭐', bg: 'bg-done/15', text: 'text-done' },
 }
 
 const categoryBorder: Record<TaskCategory, string> = {
-  university: 'border-l-purple-500',
-  work: 'border-l-stone',
-  social: 'border-l-amber-500',
-  goal: 'border-l-gold',
+  university: 'border-l-school',
+  work: 'border-l-workshop',
+  social: 'border-l-saloon',
+  goal: 'border-l-bulletin',
 }
 
 const DAY_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
@@ -22,8 +22,8 @@ const nextStatus: Record<TaskStatus, TaskStatus | null> = {
 }
 
 const nextLabels: Record<TaskStatus, string> = {
-  todo: '⚔️ Begin',
-  in_progress: '🏆 Complete',
+  todo: '▶ Start',
+  in_progress: '⭐ Done!',
   done: '',
 }
 
@@ -54,33 +54,33 @@ export function TaskItem({ task, onUpdateStatus, onDelete, activeTaskId, elapsed
   return (
     <div className={`flex items-center gap-3 p-3 rounded-lg border border-l-4 ${categoryBorder[task.category]} transition-all ${
       isTimerActive
-        ? 'bg-gold/10 border-gold/40 shadow-[0_0_12px_rgba(218,165,32,0.15)]'
+        ? 'bg-active/10 border-active/30 shadow-[0_0_12px_rgba(244,169,64,0.15)]'
         : task.status === 'done'
-          ? 'bg-parchment/30 border-leather/10'
-          : 'bg-parchment/50 border-leather/20'
+          ? 'bg-cream-dark/50 border-earth/10'
+          : 'bg-white border-earth/20'
     }`}>
       <span className="text-lg">{status.icon}</span>
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5">
-          <p className={`text-sm font-lora font-semibold truncate ${
-            task.status === 'done' ? 'line-through text-leather/40' : 'text-tavern'
+          <p className={`text-sm font-body font-semibold truncate ${
+            task.status === 'done' ? 'line-through text-text-light' : 'text-text-dark'
           }`}>
             {task.title}
           </p>
           {task.subcategory && (
-            <span className="px-1.5 py-0.5 rounded text-[9px] font-cinzel font-bold uppercase bg-leather/10 text-leather/60 shrink-0">
+            <span className="px-1.5 py-0.5 rounded text-[9px] font-heading font-bold uppercase bg-earth/10 text-text-mid shrink-0">
               {task.subcategory}
             </span>
           )}
         </div>
         {task.description && task.description !== task.subcategory && (
-          <p className="text-xs font-lora italic text-leather/50 truncate">{task.description}</p>
+          <p className="text-xs font-body italic text-text-light truncate">{task.description}</p>
         )}
       </div>
 
       {task.scheduled_date && (
-        <span className="px-2 py-0.5 rounded-full text-[10px] font-cinzel font-bold bg-sky-900/60 text-sky-200 shrink-0">
+        <span className="px-2 py-0.5 rounded-full text-[10px] font-pixel font-bold bg-sky-light/40 text-focus shrink-0">
           {task.scheduled_date}
           {task.scheduled_start && ` ${task.scheduled_start}`}
           {task.scheduled_end && `–${task.scheduled_end}`}
@@ -88,31 +88,31 @@ export function TaskItem({ task, onUpdateStatus, onDelete, activeTaskId, elapsed
       )}
 
       {task.repeat_days && task.repeat_days.length > 0 && (
-        <span className="px-1.5 py-0.5 rounded text-[9px] font-cinzel font-bold bg-gold/15 text-gold shrink-0" title={`Repeats: ${task.repeat_days.map(d => DAY_LABELS[d]).join(', ')}`}>
+        <span className="px-1.5 py-0.5 rounded text-[9px] font-heading font-bold bg-sunshine/15 text-wood-dark shrink-0" title={`Repeats: ${task.repeat_days.map(d => DAY_LABELS[d]).join(', ')}`}>
           🔁 {task.repeat_days.map(d => DAY_LABELS[d]).join(' ')}
         </span>
       )}
 
-      <span className={`px-2 py-0.5 rounded-full text-[10px] font-cinzel font-bold uppercase tracking-wider ${status.bg} ${status.text}`}>
+      <span className={`px-2 py-0.5 rounded-full text-[10px] font-pixel font-bold uppercase tracking-wider ${status.bg} ${status.text}`}>
         {status.label}
       </span>
 
       {canShowTimer && isTimerActive && (
-        <span className="text-sm font-cinzel font-bold text-gold animate-pulse">{formatTime(elapsed)}</span>
+        <span className="text-sm font-pixel font-bold text-active animate-pulse">{formatTime(elapsed)}</span>
       )}
 
       {canShowTimer && task.status !== 'done' && (
         isTimerActive ? (
-          <button onClick={onStopTimer} className="px-2 py-1 text-xs font-cinzel font-bold bg-crimson/80 text-white rounded-lg hover:bg-crimson transition-colors">
-            🛑 Halt
+          <button onClick={onStopTimer} className="px-2 py-1 text-xs font-heading font-bold bg-overdue text-white rounded-lg hover:bg-overdue/80 transition-colors">
+            ⏹ Stop
           </button>
         ) : (
           <button
             onClick={() => onStartTimer(task.id)}
             disabled={activeTaskId !== null}
-            className="px-2 py-1 text-xs font-cinzel font-bold bg-royal/60 text-purple-200 rounded-lg hover:bg-royal-light/60 disabled:opacity-30 transition-colors"
+            className="px-2 py-1 text-xs font-heading font-bold bg-focus/20 text-focus rounded-lg hover:bg-focus/30 disabled:opacity-30 transition-colors"
           >
-            ⏳ Track
+            ⏱ Track
           </button>
         )
       )}
@@ -120,7 +120,7 @@ export function TaskItem({ task, onUpdateStatus, onDelete, activeTaskId, elapsed
       {next && (
         <button
           onClick={() => onUpdateStatus(task.id, next)}
-          className="px-2 py-1 text-xs font-cinzel font-bold bg-forest/60 text-green-200 rounded-lg hover:bg-forest-dark/80 transition-colors"
+          className="px-2 py-1 text-xs font-heading font-bold bg-grass/20 text-grass-dark rounded-lg hover:bg-grass/30 transition-colors"
         >
           {nextLabels[task.status]}
         </button>
@@ -128,10 +128,10 @@ export function TaskItem({ task, onUpdateStatus, onDelete, activeTaskId, elapsed
 
       <button
         onClick={() => onDelete(task.id)}
-        className="px-2 py-1 text-xs text-crimson-light/70 hover:text-crimson-light hover:bg-crimson/10 rounded-lg transition-colors"
-        title="Abandon quest"
+        className="px-2 py-1 text-xs text-overdue/50 hover:text-overdue hover:bg-overdue/10 rounded-lg transition-colors"
+        title="Delete task"
       >
-        💀
+        🗑️
       </button>
     </div>
   )

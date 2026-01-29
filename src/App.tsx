@@ -61,27 +61,61 @@ import { WorkPlace } from './components/buildings/WorkPlace'
 import { TavernPub } from './components/buildings/TavernPub'
 import { NoticeBoard } from './components/buildings/NoticeBoard'
 
-function Stars() {
-  const stars = Array.from({ length: 40 }, (_, i) => ({
+function SkyDecor({ timeOfDay }: { timeOfDay: string }) {
+  const isNight = timeOfDay === 'night' || timeOfDay === 'dusk' || timeOfDay === 'dawn'
+
+  if (isNight) {
+    // Stars at night
+    const stars = Array.from({ length: 40 }, (_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 4}s`,
+      size: Math.random() * 2 + 1,
+    }))
+    return (
+      <div className="clouds">
+        {stars.map(s => (
+          <div
+            key={s.id}
+            className="cloud animate-twinkle"
+            style={{
+              left: s.left,
+              top: s.top,
+              animationDelay: s.delay,
+              width: s.size,
+              height: s.size,
+              background: 'white',
+              borderRadius: '50%',
+              filter: 'none',
+            }}
+          />
+        ))}
+      </div>
+    )
+  }
+
+  // Clouds during day
+  const clouds = Array.from({ length: 6 }, (_, i) => ({
     id: i,
-    left: `${Math.random() * 100}%`,
-    top: `${Math.random() * 100}%`,
-    delay: `${Math.random() * 4}s`,
-    size: Math.random() * 2 + 1,
+    top: `${10 + Math.random() * 20}%`,
+    delay: `${Math.random() * 15}s`,
+    size: 40 + Math.random() * 60,
+    opacity: 0.4 + Math.random() * 0.3,
   }))
 
   return (
-    <div className="stars">
-      {stars.map(s => (
+    <div className="clouds">
+      {clouds.map(c => (
         <div
-          key={s.id}
-          className="star animate-sparkle"
+          key={c.id}
+          className="cloud animate-drift"
           style={{
-            left: s.left,
-            top: s.top,
-            animationDelay: s.delay,
-            width: s.size,
-            height: s.size,
+            top: c.top,
+            animationDelay: c.delay,
+            width: c.size,
+            height: c.size * 0.5,
+            opacity: c.opacity,
           }}
         />
       ))}
@@ -119,37 +153,37 @@ function App() {
 
   return (
     <div className="min-h-screen relative">
-      {wb.showStars && <Stars />}
+      <SkyDecor timeOfDay={wb.timeOfDay} />
 
       <div className="relative z-10 max-w-3xl mx-auto px-4 py-8">
         {/* Village Gate Header */}
         <div className="text-center mb-10">
-          <div className="text-5xl mb-2 animate-float">🏰</div>
-          <h1 className="font-cinzel text-5xl font-black text-gold-light drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-wide">
+          <div className="text-5xl mb-2 animate-bob">🏡</div>
+          <h1 className="font-pixel text-5xl font-black text-wood-dark drop-shadow-[0_2px_4px_rgba(107,66,38,0.3)] tracking-wide">
             George Town
           </h1>
-          <p className="font-lora italic text-parchment/80 text-sm mt-1 tracking-widest">
-            ⚔️ A Realm of Productivity & Glory ⚔️
+          <p className="font-body italic text-bark/80 text-sm mt-1 tracking-widest">
+            🌿 Your Cozy Village Planner 🌿
           </p>
           <div className="flex items-start justify-center gap-3 mt-3">
-            <span className="text-2xl animate-flicker shrink-0">🏮</span>
-            <p className="font-lora italic text-parchment/50 text-xs leading-relaxed max-w-md text-center mt-1">
+            <span className="text-2xl animate-sway shrink-0">🌻</span>
+            <p className="font-body italic text-text-mid/70 text-xs leading-relaxed max-w-md text-center mt-1">
               "{dailyPearl}"
             </p>
-            <span className="text-2xl animate-flicker shrink-0" style={{ animationDelay: '1.5s' }}>🏮</span>
+            <span className="text-2xl animate-sway shrink-0" style={{ animationDelay: '1.5s' }}>🌻</span>
           </div>
         </div>
 
         {!isSupabaseConfigured && (
-          <div className="quest-scroll rounded-xl p-6 text-center mb-8">
-            <div className="text-4xl mb-3">📜</div>
-            <h2 className="font-cinzel text-lg font-bold text-leather mb-2">
-              The Oracle Awaits Connection
+          <div className="form-board rounded-xl p-6 text-center mb-8">
+            <div className="text-4xl mb-3">📋</div>
+            <h2 className="font-heading text-lg font-bold text-wood-dark mb-2">
+              The Village Needs Connection
             </h2>
-            <p className="font-lora text-sm text-tavern">
-              Copy <code className="font-mono bg-leather/10 px-1.5 py-0.5 rounded text-leather">.env.example</code> to{' '}
-              <code className="font-mono bg-leather/10 px-1.5 py-0.5 rounded text-leather">.env</code>{' '}
-              and inscribe your Supabase URL and anon key to awaken the village.
+            <p className="font-body text-sm text-text-mid">
+              Copy <code className="font-mono bg-earth/10 px-1.5 py-0.5 rounded text-bark">. env.example</code> to{' '}
+              <code className="font-mono bg-earth/10 px-1.5 py-0.5 rounded text-bark">.env</code>{' '}
+              and add your Supabase URL and anon key to get started.
             </p>
           </div>
         )}
@@ -162,35 +196,35 @@ function App() {
             {activeBuilding === null && (
               <div className="grid grid-cols-2 gap-4 mb-8">
                 <BuildingCard
-                  icon="🏛️"
+                  icon="📚"
                   name="University School"
                   subtitle="Study & classes"
-                  gradient="from-purple-950 to-indigo-950"
-                  border="border-purple-500/60"
+                  gradient="bg-school/10"
+                  border="border-school"
                   onClick={() => setActiveBuilding('university')}
                 />
                 <BuildingCard
-                  icon="⚒️"
+                  icon="🔨"
                   name="Work Place"
                   subtitle="Shifts & projects"
-                  gradient="from-stone-900 to-zinc-900"
-                  border="border-stone/60"
+                  gradient="bg-workshop/10"
+                  border="border-workshop"
                   onClick={() => setActiveBuilding('work')}
                 />
                 <BuildingCard
-                  icon="🍺"
-                  name="Tavern Pub"
+                  icon="🍻"
+                  name="Saloon"
                   subtitle="Social events"
-                  gradient="from-amber-950 to-orange-950"
-                  border="border-amber-500/60"
+                  gradient="bg-saloon/10"
+                  border="border-saloon"
                   onClick={() => setActiveBuilding('social')}
                 />
                 <BuildingCard
-                  icon="📋"
+                  icon="📌"
                   name="Notice Board"
                   subtitle="Goals & schedule"
-                  gradient="from-stone-dark to-stone-900"
-                  border="border-parchment/40"
+                  gradient="bg-bulletin/10"
+                  border="border-bulletin"
                   onClick={() => setActiveBuilding('notice')}
                 />
               </div>
@@ -204,9 +238,9 @@ function App() {
             {/* Village Footer */}
             <div className="text-center mt-8 space-y-1">
               <div className="flex justify-center gap-1 text-lg">
-                🌲🌲🏠🏚️🏠🌲🏠🌲🌲
+                🌻🌾🏡🌳🏠🌾🏡🌻
               </div>
-              <p className="font-medieval text-parchment/30 text-xs">
+              <p className="font-pixel text-text-light/50 text-xs">
                 Est. MMXXVI — George Town Village Council
               </p>
             </div>

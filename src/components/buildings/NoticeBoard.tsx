@@ -5,17 +5,17 @@ import { TaskForm } from '../TaskForm'
 import { TaskItem } from '../TaskItem'
 
 const categoryColors: Record<TaskCategory, string> = {
-  university: 'border-l-purple-500',
-  work: 'border-l-stone',
-  social: 'border-l-amber-500',
-  goal: 'border-l-gold',
+  university: 'border-l-school',
+  work: 'border-l-workshop',
+  social: 'border-l-saloon',
+  goal: 'border-l-bulletin',
 }
 
 const categoryLabels: Record<TaskCategory, string> = {
-  university: '🏛️ University',
-  work: '⚒️ Work',
-  social: '🍺 Social',
-  goal: '📋 Goal',
+  university: '📚 University',
+  work: '🔨 Work',
+  social: '🍻 Social',
+  goal: '📌 Goal',
 }
 
 interface Props {
@@ -40,17 +40,17 @@ export function NoticeBoard({ tasks, loading, onAdd, onUpdateStatus, onDelete, a
 
   return (
     <BuildingShell
-      icon="📋"
-      name="Town Notice Board"
+      icon="📌"
+      name="Notice Board"
       subtitle="Village goals & today's schedule"
-      gradient="from-stone-dark to-stone-900"
-      border="border-parchment/40"
+      gradient="bg-bulletin/10"
+      border="border-bulletin"
       onBack={onBack}
     >
       {/* Goals section */}
       <div className="mb-6">
-        <h3 className="font-cinzel text-sm font-bold text-gold-light uppercase tracking-wider mb-3">
-          🏆 Village Goals
+        <h3 className="font-heading text-sm font-bold text-wood-dark uppercase tracking-wider mb-3">
+          ⭐ Village Goals
         </h3>
         <TaskForm
           onAdd={onAdd}
@@ -59,10 +59,10 @@ export function NoticeBoard({ tasks, loading, onAdd, onUpdateStatus, onDelete, a
         />
         {loading ? (
           <div className="text-center py-4">
-            <span className="text-2xl animate-float inline-block">🔮</span>
+            <span className="text-2xl animate-bob inline-block">🌻</span>
           </div>
         ) : goals.length === 0 ? (
-          <p className="font-lora italic text-parchment/50 text-sm text-center py-4">No goals posted yet.</p>
+          <p className="font-body italic text-text-mid text-sm text-center py-4">No goals posted yet.</p>
         ) : (
           <div className="space-y-2">
             {goals.map(task => (
@@ -83,19 +83,19 @@ export function NoticeBoard({ tasks, loading, onAdd, onUpdateStatus, onDelete, a
 
       {/* Today's Schedule */}
       <div>
-        <h3 className="font-cinzel text-sm font-bold text-gold-light uppercase tracking-wider mb-3">
+        <h3 className="font-heading text-sm font-bold text-wood-dark uppercase tracking-wider mb-3">
           📅 Today's Schedule
         </h3>
         {todaySchedule.length === 0 ? (
-          <p className="font-lora italic text-parchment/50 text-sm text-center py-4">Nothing scheduled for today.</p>
+          <p className="font-body italic text-text-mid text-sm text-center py-4">Nothing scheduled for today.</p>
         ) : (
           <div className="space-y-2">
             {todaySchedule.map(task => (
               <div key={task.id} className={`border-l-4 ${categoryColors[task.category]} rounded-r-lg`}>
                 <div className="flex items-center gap-2 px-2 py-1">
-                  <span className="text-[10px] font-cinzel font-bold text-parchment/50">{categoryLabels[task.category]}</span>
+                  <span className="text-[10px] font-heading font-bold text-text-mid">{categoryLabels[task.category]}</span>
                   {task.scheduled_start && (
-                    <span className="text-[10px] font-cinzel text-parchment/40">
+                    <span className="text-[10px] font-pixel text-text-light">
                       {task.scheduled_start}{task.scheduled_end && `–${task.scheduled_end}`}
                     </span>
                   )}

@@ -25,45 +25,45 @@ function getTimeOfDay(hour: number): TimeOfDay {
   return 'dusk'
 }
 
-// Background gradients keyed by time, then modified by weather
+// Bright sky-to-meadow gradients keyed by time
 const timeGradients: Record<TimeOfDay, string> = {
-  night:   'linear-gradient(180deg, #0a0a1a 0%, #0d1b2a 30%, #1b2838 60%, #1a2a1a 85%, #1d3a1d 100%)',
-  dawn:    'linear-gradient(180deg, #1a1a2e 0%, #2d1b4e 20%, #6b3a7d 40%, #d4726a 60%, #2a4a2a 85%, #1d3a1d 100%)',
-  morning: 'linear-gradient(180deg, #3a5f8a 0%, #6b9bc0 25%, #a8c8e8 45%, #d4e4f0 60%, #3a6a3a 85%, #2d5a27 100%)',
-  day:     'linear-gradient(180deg, #1e5799 0%, #2989d8 25%, #7db9e8 50%, #a8d8ea 65%, #3a7a3a 85%, #2d5a27 100%)',
-  evening: 'linear-gradient(180deg, #1a2a4a 0%, #4a3a6a 20%, #c0605a 40%, #e8a060 55%, #3a5a3a 80%, #2d4a27 100%)',
-  dusk:    'linear-gradient(180deg, #1a1a3e 0%, #3a2a5e 25%, #7a4a6a 45%, #4a3a5a 65%, #2a4a2a 85%, #1d3a1d 100%)',
+  night:   'linear-gradient(180deg, #1a1a4e 0%, #2a2a6e 30%, #3a3a7e 60%, #2a4a3a 85%, #1d3a2d 100%)',
+  dawn:    'linear-gradient(180deg, #6a7ab8 0%, #c4a0c8 20%, #f0b8a0 40%, #f8d8a0 60%, #7ab87a 85%, #5DB85D 100%)',
+  morning: 'linear-gradient(180deg, #7ac8ee 0%, #a0d8f8 25%, #c8e8f8 45%, #d8f0e0 60%, #7ab87a 85%, #5DB85D 100%)',
+  day:     'linear-gradient(180deg, #87CEEB 0%, #B8E2F8 25%, #d4efc4 50%, #b8e0b0 65%, #7ab87a 85%, #5DB85D 100%)',
+  evening: 'linear-gradient(180deg, #5a6a9a 0%, #c88070 20%, #f0a870 40%, #f8c888 55%, #7aaa6a 80%, #5a9a5a 100%)',
+  dusk:    'linear-gradient(180deg, #4a5a8a 0%, #7a6a9a 25%, #b87a8a 45%, #a07a8a 65%, #5a8a5a 85%, #3a7a3a 100%)',
 }
 
 // Weather overlays modify the gradient
 const weatherOverrides: Record<WeatherType, Partial<Record<TimeOfDay, string>>> = {
   clear: {}, // use base gradient
   clouds: {
-    day:     'linear-gradient(180deg, #4a6a8a 0%, #6a8aaa 25%, #8aa8c8 50%, #a0b8c8 65%, #3a6a3a 85%, #2d5a27 100%)',
-    morning: 'linear-gradient(180deg, #4a6a80 0%, #7a9aaa 25%, #98b0c0 45%, #b0c0cc 60%, #3a6a3a 85%, #2d5a27 100%)',
-    evening: 'linear-gradient(180deg, #2a2a4a 0%, #4a3a5a 20%, #8a6060 40%, #a08070 55%, #3a5a3a 80%, #2d4a27 100%)',
+    day:     'linear-gradient(180deg, #8ab8d0 0%, #a0c8d8 25%, #c0d8e0 50%, #d0e0d0 65%, #7ab87a 85%, #5DB85D 100%)',
+    morning: 'linear-gradient(180deg, #80b0c8 0%, #98c0d0 25%, #b0d0d8 45%, #c0d8d0 60%, #7ab87a 85%, #5DB85D 100%)',
+    evening: 'linear-gradient(180deg, #5a6888 0%, #a07878 20%, #c89078 40%, #d0a888 55%, #6a9a6a 80%, #5a8a5a 100%)',
   },
   fog: {
-    day:     'linear-gradient(180deg, #6a7a8a 0%, #8a9aa8 25%, #a0aab8 50%, #b8c0c8 65%, #5a6a5a 85%, #4a5a4a 100%)',
-    morning: 'linear-gradient(180deg, #5a6a78 0%, #7a8a98 25%, #98a0a8 45%, #a8b0b8 60%, #5a6a5a 85%, #4a5a4a 100%)',
-    night:   'linear-gradient(180deg, #1a1a2a 0%, #2a2a3a 30%, #3a3a4a 60%, #2a3a2a 85%, #2a3a2a 100%)',
+    day:     'linear-gradient(180deg, #a0b0c0 0%, #b0c0c8 25%, #c0c8d0 50%, #d0d8d8 65%, #8a9a8a 85%, #7a8a7a 100%)',
+    morning: 'linear-gradient(180deg, #90a8b8 0%, #a0b8c0 25%, #b8c0c8 45%, #c8d0d0 60%, #8a9a8a 85%, #7a8a7a 100%)',
+    night:   'linear-gradient(180deg, #2a2a4a 0%, #3a3a5a 30%, #4a4a6a 60%, #3a4a3a 85%, #3a4a3a 100%)',
   },
   rain: {
-    day:     'linear-gradient(180deg, #3a4a5a 0%, #4a5a6a 25%, #5a6a7a 50%, #6a7a88 65%, #3a5a3a 85%, #2a4a2a 100%)',
-    morning: 'linear-gradient(180deg, #3a4a58 0%, #4a5a68 25%, #5a6878 45%, #6a7888 60%, #3a5a3a 85%, #2a4a2a 100%)',
-    evening: 'linear-gradient(180deg, #1a2a3a 0%, #2a3a4a 20%, #4a4a5a 40%, #5a5a68 55%, #2a4a2a 80%, #1d3a1d 100%)',
-    night:   'linear-gradient(180deg, #0a0a1a 0%, #1a1a2a 30%, #2a2a3a 60%, #1a2a1a 85%, #1a2a1a 100%)',
+    day:     'linear-gradient(180deg, #6a8a9a 0%, #7a9aaa 25%, #8aaab8 50%, #98b0b8 65%, #6a8a6a 85%, #5a7a5a 100%)',
+    morning: 'linear-gradient(180deg, #6a8898 0%, #7a98a8 25%, #8aa8b8 45%, #98b8c0 60%, #6a8a6a 85%, #5a7a5a 100%)',
+    evening: 'linear-gradient(180deg, #4a5a7a 0%, #5a6a7a 20%, #7a7a88 40%, #8a8a98 55%, #5a7a5a 80%, #4a6a4a 100%)',
+    night:   'linear-gradient(180deg, #1a1a3a 0%, #2a2a4a 30%, #3a3a5a 60%, #2a3a2a 85%, #2a3a2a 100%)',
   },
   snow: {
-    day:     'linear-gradient(180deg, #7a8a9a 0%, #9aa8b8 25%, #b0bcc8 50%, #c8d0d8 65%, #6a7a6a 85%, #5a6a5a 100%)',
-    morning: 'linear-gradient(180deg, #6a7a88 0%, #8a98a8 25%, #a0b0b8 45%, #b8c0c8 60%, #6a7a6a 85%, #5a6a5a 100%)',
-    night:   'linear-gradient(180deg, #1a1a2a 0%, #2a2a3a 30%, #3a3a4a 60%, #2a3a3a 85%, #2a3a3a 100%)',
+    day:     'linear-gradient(180deg, #a0c0d8 0%, #c0d8e8 25%, #d8e8f0 50%, #e8f0f8 65%, #b0c0b0 85%, #9ab09a 100%)',
+    morning: 'linear-gradient(180deg, #98b8d0 0%, #b0d0e0 25%, #c8e0e8 45%, #d8e8f0 60%, #b0c0b0 85%, #9ab09a 100%)',
+    night:   'linear-gradient(180deg, #2a2a4a 0%, #3a3a5a 30%, #4a4a6a 60%, #3a4a4a 85%, #3a4a4a 100%)',
   },
   storm: {
-    day:     'linear-gradient(180deg, #2a3040 0%, #3a4050 25%, #4a5060 50%, #5a6070 65%, #2a4a2a 85%, #1d3a1d 100%)',
-    morning: 'linear-gradient(180deg, #2a3040 0%, #3a4050 25%, #4a5060 45%, #5a6070 60%, #2a4a2a 85%, #1d3a1d 100%)',
-    evening: 'linear-gradient(180deg, #1a1a2a 0%, #2a2030 20%, #3a3040 40%, #4a4050 55%, #2a3a2a 80%, #1d2a1d 100%)',
-    night:   'linear-gradient(180deg, #08080e 0%, #10101a 30%, #1a1a28 60%, #141e14 85%, #141e14 100%)',
+    day:     'linear-gradient(180deg, #5a6a78 0%, #6a7a88 25%, #7a8a98 50%, #8a98a0 65%, #5a7a5a 85%, #4a6a4a 100%)',
+    morning: 'linear-gradient(180deg, #5a6a78 0%, #6a7a88 25%, #7a8a98 45%, #8a98a0 60%, #5a7a5a 85%, #4a6a4a 100%)',
+    evening: 'linear-gradient(180deg, #3a4a5a 0%, #4a4a5a 20%, #5a5a68 40%, #6a6a78 55%, #4a5a4a 80%, #3a4a3a 100%)',
+    night:   'linear-gradient(180deg, #10102a 0%, #1a1a3a 30%, #2a2a4a 60%, #1a2a1a 85%, #1a2a1a 100%)',
   },
 }
 
@@ -76,10 +76,10 @@ export interface WeatherState {
 }
 
 const FALLBACK: WeatherState = {
-  background: timeGradients.night,
-  showStars: true,
+  background: timeGradients.day,
+  showStars: false,
   weather: 'clear',
-  timeOfDay: 'night',
+  timeOfDay: 'day',
   temperature: null,
 }
 
