@@ -27,11 +27,11 @@ export function WorkPlace({ tasks, loading, onAdd, onUpdateStatus, onDelete, act
 
   return (
     <BuildingShell
-      icon="🔨"
+      icon="⚒️"
       name="Work Place"
-      subtitle="🔧 Shifts, projects & deadlines 💼"
-      gradient="bg-workshop/10"
-      border="border-workshop"
+      subtitle="⚒️ Shifts, projects & deadlines 💼"
+      gradient="from-stone-900 to-zinc-900"
+      border="border-stone/60"
       onBack={onBack}
     >
       <TaskForm
@@ -39,7 +39,7 @@ export function WorkPlace({ tasks, loading, onAdd, onUpdateStatus, onDelete, act
         category="work"
         showTimeFields
         subcategoryOptions={subcategoryOptions}
-        headerText="Log Work"
+        headerText="Enlist for Toil"
         hideTitle
       />
       <TaskList

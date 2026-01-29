@@ -28,11 +28,11 @@ export function UniversitySchool({ tasks, loading, onAdd, onUpdateStatus, onDele
 
   return (
     <BuildingShell
-      icon="📚"
+      icon="🏛️"
       name="University School"
-      subtitle="📖 Study sessions, classes & assignments 🎓"
-      gradient="bg-school/10"
-      border="border-school"
+      subtitle="📚 Study sessions, classes & assignments 🎓"
+      gradient="from-purple-950 to-indigo-950"
+      border="border-purple-500/60"
       onBack={onBack}
     >
       <TaskForm

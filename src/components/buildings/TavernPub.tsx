@@ -22,11 +22,11 @@ export function TavernPub({ tasks, loading, onAdd, onUpdateStatus, onDelete, act
 
   return (
     <BuildingShell
-      icon="🍻"
-      name="Saloon"
+      icon="🍺"
+      name="Tavern Pub"
       subtitle="🎉 Social events & celebrations 🎊"
-      gradient="bg-saloon/10"
-      border="border-saloon"
+      gradient="from-amber-950 to-orange-950"
+      border="border-amber-500/60"
       onBack={onBack}
     >
       <TaskForm

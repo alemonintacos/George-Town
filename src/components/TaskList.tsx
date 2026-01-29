@@ -3,10 +3,10 @@ import type { Task, TaskStatus } from '../types/database'
 import { TaskItem } from './TaskItem'
 
 const filters: { label: string; value: TaskStatus | 'all'; icon: string }[] = [
-  { label: 'All Tasks', value: 'all', icon: '📋' },
-  { label: 'Todo', value: 'todo', icon: '📋' },
-  { label: 'Active', value: 'in_progress', icon: '🔥' },
-  { label: 'Done', value: 'done', icon: '⭐' },
+  { label: 'All Quests', value: 'all', icon: '🗺️' },
+  { label: 'Awaiting', value: 'todo', icon: '📋' },
+  { label: 'In Battle', value: 'in_progress', icon: '⚔️' },
+  { label: 'Conquered', value: 'done', icon: '🏆' },
 ]
 
 interface Props {
@@ -30,8 +30,8 @@ export function TaskList({ tasks, loading, onUpdateStatus, onDelete, activeTaskI
   if (loading) {
     return (
       <div className="text-center py-8">
-        <span className="text-3xl animate-bob inline-block">🌻</span>
-        <p className="font-body italic text-text-mid text-sm mt-2">Loading your village...</p>
+        <span className="text-3xl animate-float inline-block">🔮</span>
+        <p className="font-lora italic text-parchment/60 text-sm mt-2">Consulting the oracle...</p>
       </div>
     )
   }
@@ -44,10 +44,10 @@ export function TaskList({ tasks, loading, onUpdateStatus, onDelete, activeTaskI
             <button
               key={f.value}
               onClick={() => setFilter(f.value)}
-              className={`px-3 py-1.5 text-xs font-heading font-bold rounded-full transition-all ${
+              className={`px-3 py-1.5 text-xs font-cinzel font-bold rounded-full transition-all ${
                 filter === f.value
-                  ? 'bg-sunshine text-wood-dark shadow-md'
-                  : 'bg-cream-dark text-text-mid hover:bg-wood/10 hover:text-wood-dark'
+                  ? 'bg-gradient-to-r from-gold to-gold-light text-tavern shadow-md'
+                  : 'bg-parchment/15 text-parchment/60 hover:bg-parchment/25 hover:text-parchment/80'
               }`}
             >
               {f.icon} {f.label}
@@ -59,9 +59,9 @@ export function TaskList({ tasks, loading, onUpdateStatus, onDelete, activeTaskI
       <div className="space-y-2">
         {filtered.length === 0 ? (
           <div className="text-center py-8">
-            <span className="text-4xl">🌾</span>
-            <p className="font-body italic text-text-mid text-sm mt-2">
-              Nothing here yet. Add a new task!
+            <span className="text-4xl">🍻</span>
+            <p className="font-lora italic text-parchment/50 text-sm mt-2">
+              The quest board is empty. Post a new adventure!
             </p>
           </div>
         ) : (

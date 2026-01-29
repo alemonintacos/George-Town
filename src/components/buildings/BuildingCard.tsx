@@ -11,11 +11,11 @@ export function BuildingCard({ icon, name, subtitle, gradient, border, onClick }
   return (
     <button
       onClick={onClick}
-      className={`building-card relative bg-cream ${gradient} ${border} border-3 rounded-2xl p-6 text-center shadow-[2px_2px_12px_rgba(107,66,38,0.15)] cursor-pointer transition-all hover:-translate-y-1`}
+      className={`building-card relative bg-gradient-to-br ${gradient} ${border} border-2 rounded-2xl p-6 text-center shadow-lg cursor-pointer transition-all hover:-translate-y-1 hover:shadow-2xl`}
     >
       <span className="text-4xl block mb-2">{icon}</span>
-      <h3 className="font-heading text-lg font-bold text-wood-dark">{name}</h3>
-      <p className="font-body italic text-text-mid text-xs mt-1">{subtitle}</p>
+      <h3 className="font-cinzel text-lg font-bold text-gold-light drop-shadow">{name}</h3>
+      <p className="font-lora italic text-parchment/60 text-xs mt-1">{subtitle}</p>
     </button>
   )
 }
